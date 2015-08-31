@@ -136,7 +136,7 @@ class QueryFactory
      *
      * Returns a new SELECT object.
      *
-     * @return Common\SelectInterface
+     * @return Common\SelectInterface|Common\Select
      *
      */
     public function newSelect()

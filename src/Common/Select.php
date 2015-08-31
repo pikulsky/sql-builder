@@ -942,4 +942,17 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     {
         return $this->addOrderBy($spec);
     }
+
+    /**
+     * Overwrite for type hinting.
+     *
+     * @param string $name
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public function bindValue($name, $value)
+    {
+        return parent::bindValue($name, $value);
+    }
 }
