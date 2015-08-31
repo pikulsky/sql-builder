@@ -1,7 +1,5 @@
 <?php
 
-// test
-
 spl_autoload_register(function ($class) {
 
     // the package namespace
