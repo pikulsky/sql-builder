@@ -202,9 +202,12 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
      */
     public function cols(array $cols)
     {
+        // reset first
+        $this->cols = array();
         foreach ($cols as $key => $val) {
             $this->addCol($key, $val);
         }
+        $this->setColsAlias();
         return $this;
     }
 
@@ -337,7 +340,14 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
      */
     public function from($spec)
     {
+        // reset first
+        $this->from = array();
+        $this->table_refs = array();
+
         $this->addTableRef('FROM', $spec);
+
+        $this->setColsAlias();
+
         return $this->addFrom($this->quoter->quoteName($spec));
     }
 
@@ -954,5 +964,17 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     public function bindValue($name, $value)
     {
         return parent::bindValue($name, $value);
+    }
+
+    private function setColsAlias()
+    {
+        if (empty($this->cols)) {
+            return;
+        }
+
+        $alias = current(array_keys($this->table_refs));
+        foreach ($this->cols as &$column) {
+            $column = $this->quoter->quoteName($alias . '.' . $column);
+        }
     }
 }
