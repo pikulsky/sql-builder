@@ -127,6 +127,21 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     }
 
     /**
+     * @param string $alias
+     *
+     * @return string
+     */
+    public function getCountStatement($alias = 'count')
+    {
+        $count = clone $this;
+        $count->reset();
+        $count->addCol('COUNT(*)', $alias);
+        $count->fromSubSelect($this, 'count_select');
+
+        return $count->getStatement();
+    }
+
+    /**
      *
      * Sets the number of rows per page.
      *
@@ -964,25 +979,6 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     public function bindValue($name, $value)
     {
         return parent::bindValue($name, $value);
-    }
-
-    public function getCountStatement()
-    {
-//        $clone = clone $this;
-//        $from = $clone->getStatement();
-//        $clone->reset();
-//
-//        $clone->addCol(sprintf("COUNT(id)"), 'count');
-//        $clone->fromSubSelect($from);
-//
-//        return $clone->getStatement();
-
-        $count = clone $this;
-        $count->reset();
-        $count->addCol('COUNT(*)', 'count');
-        $count->fromSubSelect($this, 'dummy');
-
-        return $count->getStatement();
     }
 
     private function setColsAlias()
