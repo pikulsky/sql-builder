@@ -966,15 +966,38 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         return parent::bindValue($name, $value);
     }
 
+    public function getCountStatement()
+    {
+//        $clone = clone $this;
+//        $from = $clone->getStatement();
+//        $clone->reset();
+//
+//        $clone->addCol(sprintf("COUNT(id)"), 'count');
+//        $clone->fromSubSelect($from);
+//
+//        return $clone->getStatement();
+
+        $count = clone $this;
+        $count->reset();
+        $count->addCol('COUNT(*)', 'count');
+        $count->fromSubSelect($this, 'dummy');
+
+        return $count->getStatement();
+    }
+
     private function setColsAlias()
     {
-        if (empty($this->cols)) {
+        if (empty($this->cols) || empty($this->table_refs)) {
             return;
         }
 
-        $alias = current(array_keys($this->table_refs));
         foreach ($this->cols as &$column) {
-            $column = $this->quoter->quoteName($alias . '.' . $column);
+            $column = $this->quoter->quoteName($this->getFromAlias() . '.' . $column);
         }
+    }
+
+    private function getFromAlias()
+    {
+        return current(array_keys($this->table_refs));
     }
 }
