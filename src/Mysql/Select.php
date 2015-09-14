@@ -138,4 +138,20 @@ class Select extends Common\Select
         $this->setFlag('SQL_BUFFER_RESULT', $enable);
         return $this;
     }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public function bindValue($name, $value)
+    {
+        // cast date time
+        if ($value instanceof \DateTime) {
+            $value = $value->format('Y-m-d H:i:s');
+        }
+
+        return parent::bindValue($name, $value);
+    }
 }
