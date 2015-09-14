@@ -148,7 +148,7 @@ class QueryFactory
      *
      * Returns a new INSERT object.
      *
-     * @return Common\InsertInterface
+     * @return Common\InsertInterface|Common\Insert
      *
      */
     public function newInsert()
