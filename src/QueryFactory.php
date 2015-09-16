@@ -136,7 +136,7 @@ class QueryFactory
      *
      * Returns a new SELECT object.
      *
-     * @return Common\SelectInterface|Common\Select
+     * @return Common\Select
      *
      */
     public function newSelect()
@@ -148,7 +148,7 @@ class QueryFactory
      *
      * Returns a new INSERT object.
      *
-     * @return Common\InsertInterface|Common\Insert
+     * @return Common\Insert
      *
      */
     public function newInsert()
@@ -162,7 +162,7 @@ class QueryFactory
      *
      * Returns a new UPDATE object.
      *
-     * @return Common\UpdateInterface
+     * @return Common\Update
      *
      */
     public function newUpdate()
@@ -174,7 +174,7 @@ class QueryFactory
      *
      * Returns a new DELETE object.
      *
-     * @return Common\DeleteInterface
+     * @return Common\Delete
      *
      */
     public function newDelete()
