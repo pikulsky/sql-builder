@@ -52,13 +52,23 @@ class Delete extends AbstractDmlQuery implements DeleteInterface
      */
     protected function build()
     {
-        return 'DELETE'
+        return
+              $this->buildDelete()
             . $this->buildFlags()
             . $this->buildFrom()
             . $this->buildWhere()
             . $this->buildOrderBy()
             . $this->buildLimit()
-            . $this->buildReturning();
+            . $this->buildReturning()
+        ;
+    }
+
+    /**
+     * @return string
+     */
+    protected function buildDelete()
+    {
+        return 'DELETE';
     }
 
     /**
@@ -70,7 +80,7 @@ class Delete extends AbstractDmlQuery implements DeleteInterface
      */
     protected function buildFrom()
     {
-        return " FROM {$this->from}";
+        return PHP_EOL . "FROM {$this->from}";
     }
 
     /**
@@ -82,7 +92,7 @@ class Delete extends AbstractDmlQuery implements DeleteInterface
      * @param string $cond The WHERE condition.
      * @param mixed ...$bind arguments to bind to placeholders
      *
-     * @return self
+     * @return static
      *
      */
     public function where($cond)

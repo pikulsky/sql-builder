@@ -104,4 +104,19 @@ class Delete extends Common\Delete implements Common\OrderByInterface, Common\Li
     {
         return $this->addOrderBy($spec);
     }
+
+    /**
+     * @return string
+     */
+    protected function buildDelete()
+    {
+        $alias = '';
+
+        $spec = explode('AS', $this->from);
+        if (2 == count($spec)) {
+            $alias = ' ' . trim($spec[1]);
+        }
+
+        return parent::buildDelete() . $alias;
+    }
 }
