@@ -106,6 +106,22 @@ class Delete extends Common\Delete implements Common\OrderByInterface, Common\Li
     }
 
     /**
+     * @param string $name
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public function bindValue($name, $value)
+    {
+        // cast date time
+        if ($value instanceof \DateTime) {
+            $value = $value->format('Y-m-d H:i:s');
+        }
+
+        return parent::bindValue($name, $value);
+    }
+
+    /**
      * @return string
      */
     protected function buildDelete()
