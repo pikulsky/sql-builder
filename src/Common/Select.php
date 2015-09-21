@@ -212,17 +212,31 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
      * @param array $cols The column(s) to add to the query. The elements can be
      * any mix of these: `array("col", "col AS alias", "col" => "alias")`
      *
-     * @return self
+     * @return static
      *
      */
     public function cols(array $cols)
+    {
+        $this->colsRaw($cols);
+        $this->setColsAlias();
+        return $this;
+    }
+
+    /**
+     * Set select columns with no alias prefix.
+     * Use this one to setup custom selects.
+     *
+     * @param array $cols
+     *
+     * @return static
+     */
+    public function colsRaw(array $cols)
     {
         // reset first
         $this->cols = array();
         foreach ($cols as $key => $val) {
             $this->addCol($key, $val);
         }
-        $this->setColsAlias();
         return $this;
     }
 
