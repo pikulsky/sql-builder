@@ -479,13 +479,17 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         if (! $this->from) {
             throw new Exception('Cannot join() without from() first.');
         }
+        $from = rtrim("$join $spec $cond");
+        if (false !== array_search($from, $this->from[$this->from_key])) {
+            return $this;
+        }
 
         $join = strtoupper(ltrim("$join JOIN"));
         $this->addTableRef($join, $spec);
 
         $spec = $this->quoter->quoteName($spec);
         $cond = $this->fixJoinCondition($cond, $bind);
-        $this->from[$this->from_key][] = rtrim("$join $spec $cond");
+        $this->from[$this->from_key][] = $from;
         return $this;
     }
 
