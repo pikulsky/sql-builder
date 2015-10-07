@@ -134,9 +134,11 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     public function getCountStatement($alias = 'count')
     {
         $count = clone $this;
+        $from = clone $this;
+        $from->limit(0);
         $count->reset();
         $count->addCol('COUNT(*)', $alias);
-        $count->fromSubSelect($this, 'count_select');
+        $count->fromSubSelect($from, 'count_select');
 
         return $count->getStatement();
     }
