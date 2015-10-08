@@ -428,6 +428,41 @@ abstract class AbstractQuery
             return ''; // not applicable
         }
 
+        // handle IN(?)
+        $needle = 'IN(:';
+        foreach ($this->where as &$where) {
+            $origin = 0;
+            while (false !== $pos = stripos($where, $needle, $origin)) {
+                // check if we have a match; check if bind value exists; check if reach the end
+                $bindName = substr($where, $start = $pos + strlen($needle), strpos($where, ')', $start) - $start);
+                if (false !== strpos($bindName, ',')) {
+                    $origin = strpos($where, ')', $pos);
+                    continue;
+                } elseif (!array_key_exists($bindName, $this->bind_values)) {
+                    throw new Exception(sprintf("Missing bind value for WHERE IN(:%s)", $bindName));
+                }
+                $values = (array) $this->bind_values[$bindName];
+                unset($this->bind_values[$bindName]);
+
+                // rebuild IN(:condition)
+                $condition = array();
+                for ($i = 0; $i < count($values); $i++) {
+                    $key = $bindName . '_' . $i;
+                    $condition[] = $key;
+                    $this->bind_values[$key] = $values[$i];
+                }
+                $condition = join(',', array_map(function($c) { return ':' . $c; }, $condition));
+
+                // rewrite where
+                $search = $needle . $bindName . ')';
+                $replace = rtrim($needle, ':') . $condition . ')';
+                $where = str_replace($search, $replace, $where);
+
+                // advance pointer
+                $origin = $start + strlen($condition);
+            }
+        }
+
         return PHP_EOL . 'WHERE' . $this->indent($this->where);
     }
 
