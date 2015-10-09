@@ -140,6 +140,10 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         $count->addCol('COUNT(*)', $alias);
         $count->fromSubSelect($from, 'count_select');
 
+        // reset bind values from FROM to take in account IN(?)
+        $this->bind_values = array();
+        $this->bindValues($from->getBindValues());
+
         return $count->getStatement();
     }
 
