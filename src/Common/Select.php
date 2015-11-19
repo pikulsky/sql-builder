@@ -1002,6 +1002,9 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
      */
     public function bindValue($name, $value)
     {
+        if (is_array($value)) {
+            $value = array_values($value); // make sure indices are correct
+        }
         return parent::bindValue($name, $value);
     }
 
