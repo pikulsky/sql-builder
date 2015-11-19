@@ -449,7 +449,7 @@ abstract class AbstractQuery
                 for ($i = 0; $i < count($values); $i++) {
                     $key = $bindName . '_' . $i;
                     $condition[] = $key;
-                    $this->bind_values[$key] = $values[$i];
+                    $this->bindValue($key, $values[$i]);
                 }
                 $condition = join(',', array_map(function($c) { return ':' . $c; }, $condition));
 
