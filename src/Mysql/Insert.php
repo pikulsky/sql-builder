@@ -32,7 +32,7 @@ class Insert extends Common\Insert
     /**
      * @var array
      */
-    protected $bind_on_update_values;
+    protected $bind_on_update_values = array();
 
     /**
      *
@@ -173,6 +173,15 @@ class Insert extends Common\Insert
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getBindValues()
+    {
+        $this->bind_values += $this->bind_on_update_values;
+        return parent::getBindValues();
+    }
+
+    /**
      *
      * Builds this query object into a string.
      *
@@ -181,7 +190,6 @@ class Insert extends Common\Insert
      */
     protected function build()
     {
-        $this->bind_values += $this->bind_on_update_values;
         return 'INSERT'
             . $this->buildFlags()
             . $this->buildInto()
