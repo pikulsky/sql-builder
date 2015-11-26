@@ -16,7 +16,8 @@ class DeleteTest extends AbstractQueryTest
 
         $actual = $this->query->__toString();
         $expect = "
-            DELETE FROM <<t1>>
+            DELETE
+            FROM <<t1>>
             WHERE
                 foo = :_1_
                 AND baz = :_2_

@@ -30,6 +30,11 @@ class Insert extends Common\Insert
     protected $col_on_update_values;
 
     /**
+     * @var array
+     */
+    protected $bind_on_update_values;
+
+    /**
      *
      * Adds or removes HIGH_PRIORITY flag.
      *
@@ -109,7 +114,7 @@ class Insert extends Common\Insert
         $this->col_on_update_values[$key] = ":$bind";
         $args = func_get_args();
         if (count($args) > 1) {
-            $this->bindValue($bind, $args[1]);
+            $this->bind_on_update_values[$bind] = $this->correctBindValue($args[1]);
         }
         return $this;
     }
@@ -176,6 +181,7 @@ class Insert extends Common\Insert
      */
     protected function build()
     {
+        $this->bind_values += $this->bind_on_update_values;
         return 'INSERT'
             . $this->buildFlags()
             . $this->buildInto()
@@ -214,11 +220,16 @@ class Insert extends Common\Insert
      */
     public function bindValue($name, $value)
     {
+        $value = $this->correctBindValue($value);
+        return parent::bindValue($name, $value);
+    }
+
+    private function correctBindValue($value)
+    {
         // cast date time
         if ($value instanceof \DateTime) {
             $value = $value->format('Y-m-d H:i:s');
         }
-
-        return parent::bindValue($name, $value);
+        return $value;
     }
 }

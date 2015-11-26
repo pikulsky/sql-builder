@@ -8,7 +8,8 @@ class DeleteTest extends Common\DeleteTest
     protected $db_type = 'mysql';
 
     protected $expected_sql_with_flag = "
-        DELETE %s FROM <<t1>>
+        DELETE %s
+        FROM <<t1>>
             WHERE
                 foo = :_1_
                 AND baz = :_2_
@@ -23,7 +24,8 @@ class DeleteTest extends Common\DeleteTest
 
         $actual = $this->query->__toString();
         $expect = '
-            DELETE FROM <<t1>>
+            DELETE
+            FROM <<t1>>
                 ORDER BY
                     c1,
                     c2
