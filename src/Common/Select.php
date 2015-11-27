@@ -375,14 +375,7 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
      */
     public function from($spec)
     {
-        // reset first
-        $this->from = array();
-        $this->table_refs = array();
-
         $this->addTableRef('FROM', $spec);
-
-        $this->setColsAlias();
-
         return $this->addFrom($this->quoter->quoteName($spec));
     }
 
@@ -821,6 +814,7 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         if (! $this->cols) {
             throw new Exception('No columns in the SELECT.');
         }
+        $this->setColsAlias();
 
         $cols = array();
         foreach ($this->cols as $key => $val) {
@@ -1012,15 +1006,17 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     {
         if (empty($this->cols) || empty($this->table_refs)) {
             return;
+        } elseif (count($this->from) > 1) {
+            return;
         }
 
+        $alias = current(array_keys($this->table_refs));
         foreach ($this->cols as &$column) {
-            $column = $this->quoter->quoteName($this->getFromAlias() . '.' . $column);
+            if (false !== strpos($column, '.') || false !== strpos($column, '(')) {
+                //TODO: has to be smart about functions (e.g. COUNT)
+                continue;
+            }
+            $column = $alias . '.' . $column;
         }
-    }
-
-    private function getFromAlias()
-    {
-        return current(array_keys($this->table_refs));
     }
 }

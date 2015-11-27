@@ -23,6 +23,59 @@ class SelectTest extends AbstractQueryTest
         $this->assertSame($expect, $actual);
     }
 
+    public function testCols()
+    {
+        $t = 't';
+        $cols = array('c1', 'c2', 'c3');
+        $expect = "
+            SELECT
+              %s
+            FROM
+              <<%s>>
+        ";
+        $expect = sprintf(
+            $expect,
+            join(",\n", array_map(function($c) use ($t) { return sprintf('<<%s>>.<<%s>>', $t, $c); }, $cols)),
+            $t
+        );
+
+        // explicit alias case
+        $query = $this->newQuery()
+            ->from($t)
+            ->cols(array_map(function($c) use ($t) { return sprintf('%s.%s', $t, $c); }, $cols))
+        ;
+        $this->assertSameQuery($expect, $query);
+
+        // check if alias is added
+        $query = $this->newQuery()->from($t)->cols($cols);
+        $this->assertSameQuery($expect, $query);
+
+        // mix
+        $expect = "
+            SELECT
+                <<t>>.<<c1>>,
+                <<t>>.<<c2>>,
+                <<t>>.<<c3>> AS <<a3>>,
+                <<t>>.<<c4>> AS <<a4>>,
+                COUNT(<<t>>.<<c6>>) AS <<a6>>
+            FROM
+                <<t>>
+        ";
+        $query = $this->newQuery()
+            ->from('t')
+            ->cols(
+                array(
+                    't.c1',
+                    'c2',
+                    't.c3' => 'a3',
+                    'c4' => 'a4',
+                    'COUNT(t.c6) AS a6'
+                )
+            )
+        ;
+        $this->assertSameQuery($expect, $query);
+    }
+
     public function testDistinct()
     {
         $this->query->distinct()
@@ -78,23 +131,6 @@ class SelectTest extends AbstractQueryTest
                 <<t1>>.<<c3>>
             FROM
                 <<t1>>
-        ';
-        $this->assertSameSql($expect, $actual);
-    }
-
-    public function testCols()
-    {
-        $this->query->cols(array(
-            't1.c1',
-            'c2' => 'a2',
-            'COUNT(t1.c3)'
-        ));
-        $actual = $this->query->__toString();
-        $expect = '
-            SELECT
-                <<t1>>.<<c1>>,
-                c2 AS <<a2>>,
-                COUNT(<<t1>>.<<c3>>)
         ';
         $this->assertSameSql($expect, $actual);
     }
@@ -164,7 +200,7 @@ class SelectTest extends AbstractQueryTest
         $this->query->cols(array('*'))->fromSubSelect($sub, 'a2');
         $expect = '
             SELECT
-                *
+                <<a2>>.*
             FROM
                 (
                     SELECT * FROM t2
