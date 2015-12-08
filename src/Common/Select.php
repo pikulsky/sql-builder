@@ -993,6 +993,18 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     }
 
     /**
+     * Resets order by if any and adds new order.
+     *
+     * @param array $spec
+     *
+     * @return AbstractQuery
+     */
+    public function setOrderBy(array $spec)
+    {
+        $this->order_by = array();
+        return $this->addOrderBy($spec);
+    }
+    /**
      * Overwrite for type hinting.
      *
      * @param string $name
