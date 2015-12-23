@@ -218,13 +218,12 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
      * @param array $cols The column(s) to add to the query. The elements can be
      * any mix of these: `array("col", "col AS alias", "col" => "alias")`
      *
-     * @return static
+     * @return self
      *
      */
     public function cols(array $cols)
     {
         $this->colsRaw($cols);
-        $this->setColsAlias();
         return $this;
     }
 
@@ -234,7 +233,7 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
      *
      * @param array $cols
      *
-     * @return static
+     * @return self
      */
     public function colsRaw(array $cols)
     {
@@ -351,6 +350,8 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
     {
         $name = $spec;
 
+        $name = str_replace(array($this->getQuoteNamePrefix(), $this->getQuoteNameSuffix()), '', $name);
+
         $pos = strripos($name, ' AS ');
         if ($pos !== false) {
             $name = trim(substr($name, $pos + 4));
@@ -358,6 +359,7 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
 
         if (isset($this->table_refs[$name])) {
             $used = $this->table_refs[$name];
+            $spec = str_replace(array($this->getQuoteNamePrefix(), $this->getQuoteNameSuffix()), '', $spec);
             throw new Exception("Cannot reference '$type $spec' after '$used'");
         }
 
@@ -768,6 +770,7 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         $this->resetFlags();
         $this->cols       = array();
         $this->from       = array();
+        $this->table_refs = array();
         $this->from_key   = -1;
         $this->where      = array();
         $this->group_by   = array();

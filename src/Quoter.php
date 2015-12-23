@@ -274,6 +274,13 @@ class Quoter
             return $text;
         }
 
+        // asterisk case
+        if (false !== $pos = strpos($text, '.*')) {
+            $result = $this->quote_name_prefix . substr($text, 0, $pos) . $this->quote_name_suffix;
+            $result .= substr($text, $pos);
+            return $result;
+        }
+
         $word = "[a-z_][a-z0-9_]*";
 
         $find = "/(\\b)($word)\\.($word)(\\b)/i";

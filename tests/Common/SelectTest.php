@@ -237,11 +237,11 @@ class SelectTest extends AbstractQueryTest
 
         $expect = '
             SELECT
-                *
+                <<a2>>.*
             FROM
                 (
                     SELECT
-                        *
+                        <<t2>>.*
                     FROM
                         <<t2>>
                     WHERE
@@ -264,7 +264,7 @@ class SelectTest extends AbstractQueryTest
         $this->query->join('natural', 't4');
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<t1>>
                     LEFT JOIN <<t2>> ON <<t1>>.<<id>> = <<t2>>.<<id>>
@@ -305,7 +305,7 @@ class SelectTest extends AbstractQueryTest
 
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<t1>>
             LEFT JOIN <<t2>> ON <<t1>>.<<id>> = <<t2>>.<<id>> AND <<t1>>.<<foo>> = :_1_
@@ -327,7 +327,7 @@ class SelectTest extends AbstractQueryTest
         $this->query->join('natural', 't4');
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<t1>>
                     LEFT JOIN <<t2>> ON <<t1>>.<<id>> = <<t2>>.<<id>>
@@ -351,7 +351,7 @@ class SelectTest extends AbstractQueryTest
         $this->query->innerJoin('t3 AS a3', 'a3.id = ?', array('bar'));
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<t1>>
             LEFT JOIN <<t2>> ON <<t2>>.<<id>> = :_1_
@@ -375,7 +375,7 @@ class SelectTest extends AbstractQueryTest
         $this->query->joinSubSelect('natural', $sub2, 'a3');
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<t1>>
                     LEFT JOIN (
@@ -420,12 +420,12 @@ class SelectTest extends AbstractQueryTest
 
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<t1>>
                     LEFT JOIN (
                         SELECT
-                            *
+                            <<t2>>.*
                         FROM
                             <<t2>>
                         WHERE
@@ -470,7 +470,7 @@ class SelectTest extends AbstractQueryTest
             ->join('left', 't3', 'USING (id)');
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<t1>>
                     INNER JOIN <<t2>> ON <<t2>>.<<id>> = <<t1>>.<<id>>
@@ -664,12 +664,12 @@ class SelectTest extends AbstractQueryTest
                      ->from('t2');
         $expect = '
             SELECT
-                c1
+                <<t1>>.<<c1>>
             FROM
                 <<t1>>
             UNION
             SELECT
-                c2
+                <<t2>>.<<c2>>
             FROM
                 <<t2>>
         ';
@@ -687,12 +687,12 @@ class SelectTest extends AbstractQueryTest
                      ->from('t2');
         $expect = '
             SELECT
-                c1
+                <<t1>>.<<c1>>
             FROM
                 <<t1>>
             UNION ALL
             SELECT
-                c2
+                <<t2>>.<<c2>>
             FROM
                 <<t2>>
         ';
@@ -740,12 +740,6 @@ class SelectTest extends AbstractQueryTest
             'overwrite as alias1',
         ));
 
-        // add separately to make sure we don't overwrite sequential keys
-        $this->query->cols(array(
-            'baz',
-            'dib',
-        ));
-
         $actual = $this->query->__toString();
 
         $expect = '
@@ -756,9 +750,7 @@ class SelectTest extends AbstractQueryTest
                 overwrite AS <<alias1>>,
                 col2 AS <<alias2>>,
                 <<table>>.<<proper>> AS <<alias_proper>>,
-                legacy invalid AS <<alias still works>>,
-                baz,
-                dib
+                legacy invalid AS <<alias still works>>
         ';
         $this->assertSameSql($expect, $actual);
     }
@@ -811,7 +803,7 @@ class SelectTest extends AbstractQueryTest
             ->from('table1 AS t1');
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<table1>> AS <<t1>>
         ';
@@ -826,12 +818,12 @@ class SelectTest extends AbstractQueryTest
 
         $expect = '
             SELECT
-                *
+                <<t2>>.*
             FROM
                 <<table2>> AS <<t2>>
             WHERE
                 field IN (SELECT
-                *
+                <<t1>>.*
             FROM
                 <<table1>> AS <<t1>>)
         ';
@@ -882,7 +874,7 @@ class SelectTest extends AbstractQueryTest
 
         $expect = '
             SELECT
-                *
+                <<t1>>.*
             FROM
                 <<table1>> AS <<t1>>
             WHERE
@@ -900,12 +892,12 @@ class SelectTest extends AbstractQueryTest
 
         $expect = '
             SELECT
-                *
+                <<t2>>.*
             FROM
                 <<table2>> AS <<t2>>
             WHERE
                 field IN (SELECT
-                        *
+                        <<t1>>.*
                     FROM
                         <<table1>> AS <<t1>>
                     WHERE
