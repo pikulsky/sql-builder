@@ -1,6 +1,11 @@
 <?php
 namespace Aura\SqlQuery;
 
+use Aura\SqlQuery\Common\Delete;
+use Aura\SqlQuery\Common\Insert;
+use Aura\SqlQuery\Common\Select;
+use Aura\SqlQuery\Common\Update;
+
 abstract class AbstractQueryTest extends \PHPUnit_Framework_TestCase
 {
     protected $query_factory;
@@ -9,6 +14,9 @@ abstract class AbstractQueryTest extends \PHPUnit_Framework_TestCase
 
     protected $db_type = 'Common';
 
+    /**
+     * @var Select|Insert|Update|Delete
+     */
     protected $query;
 
     protected function setUp()
@@ -18,6 +26,9 @@ abstract class AbstractQueryTest extends \PHPUnit_Framework_TestCase
         $this->query = $this->newQuery();
     }
 
+    /**
+     * @return Select|Insert|Update|Delete
+     */
     protected function newQuery()
     {
         $method = 'new' . $this->query_type;
@@ -45,6 +56,11 @@ abstract class AbstractQueryTest extends \PHPUnit_Framework_TestCase
 
         // are they the same now?
         $this->assertSame($expect, $actual);
+    }
+
+    protected function assertSameQuery($expect, AbstractQuery $query)
+    {
+        $this->assertSameSql($expect, $query->__toString());
     }
 
     protected function requoteIdentifiers($string)

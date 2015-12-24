@@ -255,6 +255,7 @@ class Quoter
     }
 
     /**
+     * TODO: optimize; drop preg !
      *
      * Quotes all fully-qualified identifier names ("table.col") in a string.
      *
@@ -268,8 +269,7 @@ class Quoter
      */
     protected function replaceNamesIn($text)
     {
-        $is_string_literal = strpos($text, "'") !== false
-                        || strpos($text, '"') !== false;
+        $is_string_literal = strpos($text, "'") !== false || strpos($text, '"') !== false;
         if ($is_string_literal) {
             return $text;
         }
@@ -289,7 +289,15 @@ class Quoter
               . '$4'
               ;
 
-        $text = preg_replace($find, $repl, $text);
+        $find2 = "/(\\b)($word)\\.\\*/i";
+        $repl2 = '$1'
+            . $this->quote_name_prefix
+            . '$2'
+            . $this->quote_name_suffix
+            . '.*'
+        ;
+
+        $text = preg_replace(array($find, $find2), array($repl, $repl2), $text);
 
         return $text;
     }
