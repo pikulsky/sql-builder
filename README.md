@@ -1,4 +1,4 @@
-# !!! DOCUMENTATION NEEDS UPDATE !!!
+# !!! DOCUMENTATION NEEDS AN UPDATE !!!
 
 # Aura.SqlQuery
 
