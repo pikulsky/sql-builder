@@ -1,3 +1,5 @@
+!!! DOCUMENTATION NEEDS UPDATE !!!
+
 # Aura.SqlQuery
 
 Provides query builders for MySQL, Postgres, SQLite, and Microsoft SQL Server.
