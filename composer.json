@@ -1,5 +1,5 @@
 {
-    "name": "paska27/sql-builder",
+    "name": "oxynade/sql-builder",
     "type": "library",
     "description": "Object-oriented query builders for MySQL, Postgres, SQLite, and SQLServer; can be used with any database connection library.",
     "keywords": [
