@@ -1,0 +1,14 @@
+Admin:
+===
+- add public keys for devs
+- run unit test after push
+- restrict permissions for master 3.x branches
+
+Code:
+===
+- Update/Delete join
+- owWhere with parenthesis
+- improve IN(?)
+- improve Quoter
+- improve Common\Select.setColsAlias()
+- fix tests/Sqlite/UpdateTest.testActual
