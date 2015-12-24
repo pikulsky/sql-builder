@@ -8,7 +8,7 @@ Code:
 ===
 - Update docs
 - Update/Delete join
-- owWhere with parenthesis
+- orWhere with parenthesis
 - improve IN(?)
 - improve Quoter
 - improve Common\Select.setColsAlias()
