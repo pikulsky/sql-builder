@@ -6,6 +6,7 @@ Admin:
 
 Code:
 ===
+- Update docs
 - Update/Delete join
 - owWhere with parenthesis
 - improve IN(?)
