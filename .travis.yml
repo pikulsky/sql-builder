@@ -6,4 +6,4 @@ before_install:
 before_script:
   - composer install 
 script:
-  - php ./phpunit.php tests
+  - ./vendor/bin/phpunit tests
