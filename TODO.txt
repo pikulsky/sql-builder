@@ -1,6 +1,5 @@
 Admin:
 ===
-- add public keys for devs
 - run unit test after push
 - restrict permissions for master 3.x branches
 
