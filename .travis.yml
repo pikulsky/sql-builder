@@ -7,4 +7,4 @@ before_script:
   - composer install 
 script:
   #- ./vendor/bin/phpunit
-  - cat vendor/autoload.php
+  - cat vendor/composer/autoload_real.php
