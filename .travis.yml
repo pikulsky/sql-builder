@@ -6,4 +6,4 @@ before_install:
 before_script:
   - composer install 
 script:
-  - ./bin/phpunit
+  - ls -alh bin
