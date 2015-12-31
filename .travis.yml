@@ -6,5 +6,4 @@ before_install:
 before_script:
   - composer install 
 script:
-  #- ./vendor/bin/phpunit
-  - php ./phpunit.php
+  - ./bin/phpunit
