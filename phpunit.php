@@ -1,10 +1,14 @@
 <?php
 error_reporting(E_ALL);
 
+$autoload = __DIR__ . '/vendor/autoload.php';
+if (!file_exists($autoload)) {
+    throw new \RuntimeException('Missing composer autoload: ' . $autoload);
+}
 /** @var \Composer\Autoload\ClassLoader $loader */
-$loader = require __DIR__ . '/autoload.php';
+$loader =  require_once $autoload;
 
-var_dump(__DIR__, $loader);exit;
+var_dump($loader);exit;
 
 // set up tests autoloading
 $files = rglob(__DIR__ . '/tests', '/*.php');
