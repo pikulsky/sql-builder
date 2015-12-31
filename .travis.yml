@@ -6,4 +6,4 @@ before_install:
 before_script:
   - composer install 
 script:
-  - ls -alh vendor/phpunit/phpunit/phpunit
+  - ./vendor/phpunit/phpunit/phpunit
