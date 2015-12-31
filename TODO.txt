@@ -2,8 +2,8 @@ test push
 
 Admin:
 ===
-- run unit test after push
 - restrict permissions for master 3.x branches
+- attach scruitinizer build
 
 Code:
 ===
