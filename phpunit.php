@@ -4,6 +4,8 @@ error_reporting(E_ALL);
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__ . '/autoload.php';
 
+var_dump($loader);exit;
+
 // set up tests autoloading
 $files = rglob(__DIR__ . '/tests', '/*.php');
 $psr4 = array();
