@@ -6,9 +6,7 @@ if (!file_exists($autoload)) {
     throw new \RuntimeException('Missing composer autoload: ' . $autoload);
 }
 /** @var \Composer\Autoload\ClassLoader $loader */
-$loader =  require_once $autoload;
-
-var_dump($loader);exit;
+$loader =  require $autoload;
 
 // set up tests autoloading
 $files = rglob(__DIR__ . '/tests', '/*.php');
