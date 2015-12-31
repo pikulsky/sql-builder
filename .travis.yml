@@ -6,4 +6,4 @@ before_install:
 before_script:
   - composer install 
 script:
-  - ls -alh bin
+  - ls -alh vendor/bin
