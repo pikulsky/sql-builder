@@ -7,8 +7,3 @@ before_script:
   - composer install 
 script:
   - ./vendor/bin/phpunit
-
-# whitelist
-branches:
-  only:
-    - 3.1
