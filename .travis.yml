@@ -6,4 +6,5 @@ before_install:
 before_script:
   - composer install 
 script:
-  - ./vendor/bin/phpunit
+  #- ./vendor/bin/phpunit
+  - cat vendor/autoload.php
