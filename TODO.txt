@@ -14,3 +14,4 @@ Code:
 - improve Quoter
 - improve Common\Select.setColsAlias()
 - fix tests/Sqlite/UpdateTest.testActual
+- innerJoin / leftJoin of the the same table won't work; => results in duplicate joins
