@@ -98,11 +98,7 @@ class Update extends Common\Update implements Common\OrderByInterface, Common\Li
      */
     public function bindValue($name, $value)
     {
-        // cast date time
-        if ($value instanceof \DateTime) {
-            $value = $value->format('Y-m-d H:i:s');
-        }
-
+        $value = Util::correctBindValue($value);
         return parent::bindValue($name, $value);
     }
 }
