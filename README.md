@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/oxynade/sql-builder.svg)](https://travis-ci.org/oxynade/sql-builder)
 
-# !!!! DOCUMENTATION NEEDS AN UPDATE !!!!
+# !!! DOCUMENTATION NEEDS AN UPDATE !!!
 # Aura.SqlQuery
 
 Provides query builders for MySQL, Postgres, SQLite, and Microsoft SQL Server.
