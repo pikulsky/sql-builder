@@ -1,5 +1,3 @@
-test push
-
 Admin:
 ===
 - restrict permissions for master 3.x branches
